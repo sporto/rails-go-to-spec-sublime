@@ -8,6 +8,11 @@ Only supports _spec.rb files at the moment.
 Installation
 ------------
 
+Using Sublime Package Control
+http://wbond.net/sublime_packages/package_control
+
+Install rails_go_to_spec
+
 Usage
 -----
 - Run from menu > Goto > Rails Go to Spec
