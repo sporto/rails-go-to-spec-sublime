@@ -1,0 +1,3 @@
+[
+  { "keys": ["shift+super+y"], "command": "rails_go_to_spec" }
+]
