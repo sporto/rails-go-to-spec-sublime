@@ -1,3 +1,4 @@
+# import sublime
 import re
 
 class Resolver:
@@ -27,6 +28,7 @@ class Resolver:
 
 	def get_spec(self, file):
 		file = re.sub(r'\.rb$', '_spec.rb', file)
+		file = re.sub(r'\.erb$', '.erb_spec.rb', file)
 		if file.find('/lib/') > -1:
 			file = re.sub(r'/lib/', '/spec/lib/', file)
 		else:

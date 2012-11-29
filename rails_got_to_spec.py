@@ -2,6 +2,7 @@ import sublime, sublime_plugin
 from resolver import *
 
 class RailsGoToSpecCommand(sublime_plugin.WindowCommand):
+	
 	def run(self):
 		win = self.window
 		view = win.active_view()
@@ -14,7 +15,7 @@ class RailsGoToSpecCommand(sublime_plugin.WindowCommand):
 
 	def open(self, file):
 		if file == "":
-			sublime.status_message("Not a valid .rb file")
+			sublime.status_message("Not a valid file")
 			return
 		if os.path.exists(file):
 			self.window.open_file(file)

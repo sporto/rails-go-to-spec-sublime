@@ -50,6 +50,11 @@ class ResolverTest(unittest.TestCase):
 		r = Resolver().get_spec(file)
 		self.assertEqual(r, '/spec/lib/foo/utility_spec.rb')
 
+	def test_finds_spec_from_erb(self):
+		file = '/app/views/users/new.html.erb'
+		r = Resolver().get_spec(file)
+		self.assertEqual(r, '/spec/views/users/new.html.erb_spec.rb')
+
 		# run
 
 	def test_run(self):
@@ -71,6 +76,11 @@ class ResolverTest(unittest.TestCase):
 		file = '/spec/lib/namespace/foo_spec.rb'
 		r = Resolver().run(file)
 		self.assertEqual(r, '/lib/namespace/foo.rb')
+
+	def test_run_for_erb_spec(self):
+		file = '/spec/views/namespace/users/_new.html.erb_spec.rb'
+		r = Resolver().run(file)
+		self.assertEqual(r, '/app/views/namespace/users/_new.html.erb')
 
 if __name__ == '__main__':
 	unittest.main()
