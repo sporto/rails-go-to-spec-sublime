@@ -20,8 +20,8 @@ class RailsGoToSpecCommand(sublime_plugin.WindowCommand):
 			self.window.open_file(file)
 			sublime.status_message("Opening " + file)
 		else:
-			sublime.status_message("Cannot find spec! " +  file)
-			if sublime.ok_cancel_dialog("Create spec? " + file):
+			sublime.status_message("Cannot find file! " +  file)
+			if sublime.ok_cancel_dialog("Create file? " + file):
 				self.create(file)
 				self.window.open_file(file)
 

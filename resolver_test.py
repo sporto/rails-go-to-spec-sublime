@@ -7,7 +7,12 @@ from resolver import *
 class ResolverTest(unittest.TestCase):
 
 	def test_is_spec_returns_true(self):
-		file = '/app/foo/something_spec.rb'
+		file = '/spec/foo/something_spec.rb'
+		r = Resolver().is_spec(file)
+		self.assertEqual(r, True)
+
+	def test_is_spec_returns_true_for_erb(self):
+		file = '/spec/views/something.html.erb_spec.rb'
 		r = Resolver().is_spec(file)
 		self.assertEqual(r, True)
 
@@ -16,25 +21,36 @@ class ResolverTest(unittest.TestCase):
 		r = Resolver().is_spec(file)
 		self.assertEqual(r, False)
 
-	def test_get_source(self):
+	# get_source
+
+	def test_finds_source(self):
 		file = '/spec/something/foo_spec.rb'
 		r = Resolver().get_source(file)
 		self.assertEqual(r, '/app/something/foo.rb')
 
-	def test_get_source_lib(self):
+	def test_finds_source_from_erb(self):
+		file = '/spec/views/namespace/users/_something.html.erb_spec.rb'
+		r = Resolver().get_source(file)
+		self.assertEqual(r, '/app/views/namespace/users/_something.html.erb')
+
+	def test_finds_source_from_lib(self):
 		file = '/spec/lib/something/foo_spec.rb'
 		r = Resolver().get_source(file)
 		self.assertEqual(r, '/lib/something/foo.rb')
+
+	# get_spec
 
 	def test_finds_spec(self):
 		file = '/app/models/user.rb'
 		r = Resolver().get_spec(file)
 		self.assertEqual(r, '/spec/models/user_spec.rb')
 
-	def test_finds_spec_in_lib(self):
+	def test_finds_spec_from_lib(self):
 		file = '/lib/foo/utility.rb'
 		r = Resolver().get_spec(file)
 		self.assertEqual(r, '/spec/lib/foo/utility_spec.rb')
+
+		# run
 
 	def test_run(self):
 		file = '/app/decorators/namespace/user_decorator.rb'

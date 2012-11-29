@@ -12,11 +12,16 @@ class Resolver:
 		return file.find('_spec.rb') != -1
 
 	def get_source(self, file):
-		file = re.sub(r'\_spec.rb$', '.rb', file)
+		if file.find('erb_spec.rb') > -1:
+			file = re.sub(r'erb_spec.rb$', 'erb', file)
+		else:
+			file = re.sub(r'\_spec.rb$', '.rb', file)
+
 		if file.find('/spec/lib/') > -1:
 			file = re.sub(r'/spec/lib/', '/lib/', file)
 		else:
 			file = re.sub(r'/spec/', '/app/', file)
+
 		return file
 
 
