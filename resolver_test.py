@@ -33,6 +33,11 @@ class ResolverTest(unittest.TestCase):
 		r = Resolver().get_source(file)
 		self.assertEqual(r, '/app/views/namespace/users/_something.html.erb')
 
+	def test_finds_source_from_haml(self):
+		file = '/spec/views/documents/update.html.haml_spec.rb'
+		r = Resolver().get_source(file)
+		self.assertEqual(r, '/app/views/documents/update.html.haml')
+
 	def test_finds_source_from_lib(self):
 		file = '/spec/lib/something/foo_spec.rb'
 		r = Resolver().get_source(file)
@@ -54,6 +59,11 @@ class ResolverTest(unittest.TestCase):
 		file = '/app/views/users/new.html.erb'
 		r = Resolver().get_spec(file)
 		self.assertEqual(r, '/spec/views/users/new.html.erb_spec.rb')
+
+	def test_finds_spec_from_haml(self):
+		file = '/app/views/account/login.html.haml'
+		r = Resolver().get_spec(file)
+		self.assertEqual(r, '/spec/views/account/login.html.haml_spec.rb')
 
 		# run
 

@@ -13,8 +13,13 @@ class Resolver:
 		return file.find('_spec.rb') != -1
 
 	def get_source(self, file):
-		if file.find('erb_spec.rb') > -1:
-			file = re.sub(r'erb_spec.rb$', 'erb', file)
+		# find erb, haml
+		match = re.search(r'(.erb|.haml)_spec.rb$', file)
+		if match:
+			ext = match.group(0)
+			regex = re.escape(ext)
+			ext = re.sub(r'_spec.rb', '', ext)
+			file = re.sub(regex, ext, file)
 		else:
 			file = re.sub(r'\_spec.rb$', '.rb', file)
 
@@ -27,8 +32,15 @@ class Resolver:
 
 
 	def get_spec(self, file):
-		file = re.sub(r'\.rb$', '_spec.rb', file)
-		file = re.sub(r'\.erb$', '.erb_spec.rb', file)
+		# find erb, haml
+		match = re.search(r'erb$|haml$', file)
+		if match:
+			ext = match.group(0)
+			regex = re.escape(ext) + "$"
+			file = re.sub(regex, ext + '_spec.rb', file)
+		else:
+			file = re.sub(r'\.rb$', '_spec.rb', file)
+
 		if file.find('/lib/') > -1:
 			file = re.sub(r'/lib/', '/spec/lib/', file)
 		else:
