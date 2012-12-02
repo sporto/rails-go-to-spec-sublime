@@ -1,4 +1,4 @@
-import sublime, sublime_plugin
+import sublime, sublime_plugin, os
 from resolver import *
 
 class RailsGoToSpecCommand(sublime_plugin.WindowCommand):
@@ -14,10 +14,12 @@ class RailsGoToSpecCommand(sublime_plugin.WindowCommand):
 		return self.window.active_view() != None
 
 	def open(self, file):
+		sublime.status_message("Trying to open " + file)
 		if file == "":
 			sublime.status_message("Not a valid file")
 			return
 		if os.path.exists(file):
+			sublime.status_message("File exists " + file)
 			self.window.open_file(file)
 			sublime.status_message("Opening " + file)
 		else:
