@@ -26,7 +26,7 @@ class Resolver:
 		if file.find('/spec/lib/') > -1:
 			file = re.sub(r'/spec/lib/', '/lib/', file)
 		else:
-			file = re.sub(r'/spec/', '/app/', file)
+			file = re.sub(r'/spec/', '/app/', file, 1)
 
 		return file
 
@@ -44,5 +44,5 @@ class Resolver:
 		if file.find('/lib/') > -1:
 			file = re.sub(r'/lib/', '/spec/lib/', file)
 		else:
-			file = re.sub(r'/app/', '/spec/', file)
+			file = re.sub(r'/app/', '/spec/', file, 1)
 		return file
