@@ -1,7 +1,7 @@
 Rails Go to Spec
 ================
 
-A Sublime Text 2 plug-in. From a .rb file this plug-in will open the relevant spec. If the spec doesn't exist it asks if it should be created. 
+A Sublime Text 3 plug-in. From a .rb file this plug-in will open the relevant spec. If the spec doesn't exist it asks if it should be created. 
 
 Only supports _spec.rb files at the moment.
 
@@ -22,4 +22,4 @@ Usage
 Testing
 -------
 
-  python name_of_test.py
+  python resolver_test.py
