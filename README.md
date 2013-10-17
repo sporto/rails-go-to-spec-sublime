@@ -18,3 +18,8 @@ Usage
 - Run from menu > Goto > Rails Go to Spec
 - Default key binding is command + shift + y
 - Or run from command palette 'Rails Go to Spec'
+
+Testing
+-------
+
+  python name_of_test.py
