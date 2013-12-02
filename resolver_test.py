@@ -2,7 +2,7 @@
 # python resolver_test.py
 
 import unittest
-from resolver import *
+from RailsGoToSpec.resolver import *
 
 class ResolverTest(unittest.TestCase):
 
