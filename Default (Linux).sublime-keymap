@@ -1,3 +1,3 @@
 [
-	{ "keys": ["ctrl+shift+y"], "command", "rails_go_to_spec" }
+	{ "keys": ["ctrl+shift+y"], "command": "rails_go_to_spec" }
 ]
