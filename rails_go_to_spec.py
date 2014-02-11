@@ -8,6 +8,8 @@ class RailsGoToSpecCommand(sublime_plugin.WindowCommand):
 		win = self.window
 		view = win.active_view()
 		current_file = view.file_name()
+		if os.name == 'nt':
+			current_file = current_file.replace('\\', '/')
 		other_file = RailsGoToSpec.resolver.Resolver().run(current_file)
 		self.open(other_file)
 
