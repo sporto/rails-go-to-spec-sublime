@@ -19,6 +19,11 @@ Usage
 - Default key binding is command + shift + y
 - Or run from command palette 'Rails Go to Spec'
 
+Dev
+----
+
+git clone git@github.com:sporto/rails_go_to_spec.git RailsGoToSpec
+
 Testing
 -------
 

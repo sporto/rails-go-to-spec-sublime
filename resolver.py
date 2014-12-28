@@ -1,4 +1,3 @@
-# import sublime
 import re
 
 class Resolver:
@@ -15,25 +14,33 @@ class Resolver:
 	def get_source(self, file):
 		# find erb, haml
 		match = re.search(r'(.erb|.haml)_spec.rb$', file)
+		related = []
+
 		if match:
 			ext = match.group(0)
 			regex = re.escape(ext)
 			ext = re.sub(r'_spec.rb', '', ext)
 			file = re.sub(regex, ext, file)
 		else:
+			# simply sub .rb to _spec.rb
+			# e.g. foo.rb -> foo_spec.rb
 			file = re.sub(r'\_spec.rb$', '.rb', file)
 
 		if file.find('/spec/lib/') > -1:
-			file = re.sub(r'/spec/lib/', '/lib/', file)
+			# file in lib
+			related.append(re.sub(r'/spec/lib/', '/lib/', file))
 		else:
-			file = re.sub(r'/spec/', '/app/', file, 1)
+			related.append(re.sub(r'/spec/', '/app/', file, 1))
+			related.append(re.sub(r'/spec/', '/', file, 1))
 
-		return file
+		return related
 
 
 	def get_spec(self, file):
 		# find erb, haml
 		match = re.search(r'erb$|haml$', file)
+		related = []
+
 		if match:
 			ext = match.group(0)
 			regex = re.escape(ext) + "$"
@@ -42,7 +49,10 @@ class Resolver:
 			file = re.sub(r'\.rb$', '_spec.rb', file)
 
 		if file.find('/lib/') > -1:
-			file = re.sub(r'/lib/', '/spec/lib/', file)
+			related.append(re.sub(r'/lib/', '/spec/lib/', file))
+		elif file.find('/app/') > -1:
+			related.append(re.sub(r'/app/', '/spec/', file, 1))
 		else:
-			file = re.sub(r'/app/', '/spec/', file, 1)
-		return file
+			related.append('/spec' + file)
+
+		return related
