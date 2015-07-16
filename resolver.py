@@ -13,7 +13,7 @@ class Resolver:
 
 	def get_source(self, file):
 		# find erb, haml
-		match = re.search(r'(.erb|.haml)_spec.rb$', file)
+		match = re.search(r'(.erb|.haml|.slim)_spec.rb$', file)
 		related = []
 
 		if match:
@@ -38,7 +38,7 @@ class Resolver:
 
 	def get_spec(self, file):
 		# find erb, haml
-		match = re.search(r'erb$|haml$', file)
+		match = re.search(r'erb$|haml$|slim$', file)
 		related = []
 
 		if match:
