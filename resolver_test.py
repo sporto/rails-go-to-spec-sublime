@@ -1,4 +1,4 @@
-# to run 
+# to run
 # python resolver_test.py
 
 import unittest
@@ -26,6 +26,10 @@ class ResolverTest(unittest.TestCase):
 		r = Resolver().is_spec(file)
 		self.assertEqual(r, False)
 
+	def test_is_spec_returns_false_for_jbuilder(self):
+		file = '/spec/views/something.json.jbuilder'
+		r = Resolver().is_spec(file)
+		self.assertEqual(r, False)
 	# get_source
 
 	def test_finds_source(self):
@@ -48,6 +52,13 @@ class ResolverTest(unittest.TestCase):
 		self.assertEqual(len(r), 2)
 		self.assertEqual(r[0], '/app/views/documents/update.html.haml')
 		self.assertEqual(r[1], '/views/documents/update.html.haml')
+
+	def test_finds_source_from_haml(self):
+		file = '/spec/views/documents/show.json.jbuilder_spec.rb'
+		r = Resolver().get_source(file)
+		self.assertEqual(len(r), 2)
+		self.assertEqual(r[0], '/app/views/documents/show.json.jbuilder')
+		self.assertEqual(r[1], '/views/documents/show.json.jbuilder')
 
 	def test_finds_source_from_lib(self):
 		file = '/spec/lib/something/foo_spec.rb'
@@ -80,6 +91,12 @@ class ResolverTest(unittest.TestCase):
 		r = Resolver().get_spec(file)
 		self.assertEqual(len(r), 1)
 		self.assertEqual(r[0], '/spec/views/account/login.html.haml_spec.rb')
+
+	def test_finds_spec_from_jbuilder(self):
+		file = '/app/views/account/show.json.jbuilder'
+		r = Resolver().get_spec(file)
+		self.assertEqual(len(r), 1)
+		self.assertEqual(r[0], '/spec/views/account/show.json.jbuilder_spec.rb')
 
 	def test_finds_spec_from_other(self):
 		file = '/foo/user.rb'
@@ -121,6 +138,13 @@ class ResolverTest(unittest.TestCase):
 		self.assertEqual(len(r), 2)
 		self.assertEqual(r[0], '/app/views/namespace/users/_new.html.erb')
 		self.assertEqual(r[1], '/views/namespace/users/_new.html.erb')
+
+	def test_run_for_jbuilder_spec(self):
+		file = '/spec/views/namespace/users/show.json.jbuilder_spec.rb'
+		r = Resolver().run(file)
+		self.assertEqual(len(r), 2)
+		self.assertEqual(r[0], '/app/views/namespace/users/show.json.jbuilder')
+		self.assertEqual(r[1], '/views/namespace/users/show.json.jbuilder')
 
 if __name__ == '__main__':
 	unittest.main()
