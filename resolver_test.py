@@ -2,7 +2,11 @@
 # python resolver_test.py
 
 import unittest
-from .resolver import *
+try:
+	from .resolver import *
+except ImportError:
+	from resolver import *
+
 
 class ResolverTest(unittest.TestCase):
 
