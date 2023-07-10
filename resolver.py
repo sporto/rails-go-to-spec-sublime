@@ -1,58 +1,74 @@
 import re
 
-class Resolver:
+def code_to_spec(file):
+	with_spec_ext = add_spec_extension(file)
+	return switch_to_spec_dir(with_spec_ext)
 
-	def run(self, file, spec_base='spec'):
-		if self.is_spec(file):
-			return self.get_source(file, spec_base)
-		else:
-			return self.get_spec(file, spec_base)
+def spec_to_code(file):
+	without_spec_ext = remove_spec_extension(file)
+	return switch_to_code_dir(without_spec_ext)
+
+def switch_to_spec_dir(file):
+	if file.startswith("/app/controllers/"):
+		return [
+			file.replace("/app/controllers/", "/spec/requests/"),
+			file.replace("/app/controllers/", "/spec/controllers/"),
+		]
+	elif file.startswith("/app/"):
+		return [
+			file.replace("/app/", "/spec/"),
+		]
+	else:
+		return [
+			f"/spec{file}"
+		]
+
+def switch_to_code_dir(file):
+	if file.startswith("/spec/config/initializers/"):
+		return [
+			file.replace("/spec/", "/"),
+		]
+	elif file.startswith("/spec/lib/"):
+		return [
+			file.replace("/spec/", "/"),
+			file.replace("/spec/", "/app/"),
+		]
+	elif file.startswith("/spec/requests/"):
+		return [
+			file.replace("/spec/requests/", "/app/controllers/"),
+		]
+	else:
+		return [
+			file.replace("/spec/", "/app/"),
+		]
+
+def is_view_file(file):
+	view_regex = re.compile(r'.erb$|.haml$|.slim$')
+	return bool(re.search(view_regex, file))
+
+def add_spec_extension(file):
+	if is_view_file(file):
+		return file\
+			.replace(".erb", ".erb_spec.rb")\
+			.replace(".haml", ".haml_spec.rb")\
+			.replace(".slim", ".slim_spec.rb")
+	else:
+		return file.replace(".rb", "_spec.rb")
+
+def remove_spec_extension(file):
+	return file\
+		.replace(".erb_spec.rb", ".erb")\
+		.replace(".haml_spec.rb", ".haml")\
+		.replace(".slim_spec.rb", ".slim")\
+		.replace("_spec.rb", ".rb")
+
+class Resolver:
 
 	def is_spec(self, file):
 		return file.find('_spec.rb') != -1
 
-	def get_source(self, file, spec_base='spec'):
-		# find erb, haml
-		match = re.search(r'(.erb|.haml|.slim|.jbuilder)_spec.rb$', file)
-		related = []
-
-		if match:
-			ext = match.group(0)
-			regex = re.escape(ext)
-			ext = re.sub(r'_spec.rb', '', ext)
-			file = re.sub(regex, ext, file)
+	def get_related(self, file):
+		if self.is_spec(file):
+			return spec_to_code(file)
 		else:
-			# simply sub .rb to _spec.rb
-			# e.g. foo.rb -> foo_spec.rb
-			file = re.sub(r'\_spec.rb$', '.rb', file)
-
-		if file.find('/' + spec_base + '/lib/') > -1:
-			# file in lib
-			related.append(re.sub(r'/' + spec_base + '/lib/', '/lib/', file))
-		else:
-			related.append(re.sub(r'/' + spec_base + '/', '/app/', file, 1))
-			related.append(re.sub(r'/' + spec_base + '/', '/', file, 1))
-
-		return related
-
-
-	def get_spec(self, file, spec_base='spec'):
-		# find erb, haml
-		match = re.search(r'erb$|haml$|slim$|jbuilder$', file)
-		related = []
-
-		if match:
-			ext = match.group(0)
-			regex = re.escape(ext) + "$"
-			file = re.sub(regex, ext + '_spec.rb', file)
-		else:
-			file = re.sub(r'\.rb$', '_spec.rb', file)
-
-		if file.find('/lib/') > -1:
-			related.append(re.sub(r'/lib/', '/' + spec_base + '/lib/', file))
-		elif file.find('/app/') > -1:
-			related.append(re.sub(r'/app/', '/' + spec_base + '/', file, 1))
-		else:
-			related.append('/' + spec_base + file)
-
-		return related
+			return code_to_spec(file)
