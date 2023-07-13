@@ -1,4 +1,4 @@
-Rails Go to Spec
+Rails Goto Spec
 ================
 
 Jump back and forth from code to spec.
@@ -10,13 +10,13 @@ Installation
 Using Sublime Package Control
 http://wbond.net/sublime_packages/package_control
 
-Install `RailsGotoSpec`
+Install `RailsGoToSpec`
 
 Usage
 -----
-- Run from menu `Goto > RailsGotoSpec`
+- Run from menu `Goto > Rails Go To Spec`
 - Default key binding is `command + shift + y` (mac) or `ctrl + shift + y` (win, linux)
-- Or run from command palette 'Rails Go to Spec'
+- Or run from command palette 'Rails Go To Spec'
 
 Testing
 -------

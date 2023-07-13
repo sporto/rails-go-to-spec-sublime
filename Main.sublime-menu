@@ -3,7 +3,7 @@
   "id": "goto",
   "children": [{
     "id": "rails_go_to_spec",
-    "caption": "Rails Go to Spec",
+    "caption": "Rails Go To Spec",
     "command": "rails_go_to_spec"
   }]
 }]
