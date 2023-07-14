@@ -1,5 +1,5 @@
 import sublime, sublime_plugin, os
-import RailsGoToSpec.resolver
+import RailsGoToSpecSublime.resolver
 import re
 
 class RailsGoToSpecCommand(sublime_plugin.WindowCommand):
