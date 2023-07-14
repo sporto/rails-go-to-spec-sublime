@@ -37,9 +37,17 @@ class ResolverTest(unittest.TestCase):
 
 	# get_related
 
+	def add_subproject(self, file):
+		return "/subproject" + file
+
 	def assert_get_related(self, file, expected):
 		actual = Resolver().get_related(file)
 		self.assertEqual(actual, expected)
+
+		file_in_subproject = self.add_subproject(file)
+		actual_in_subproject = Resolver().get_related(file_in_subproject)
+		expected_in_subproject = list(map(self.add_subproject, expected))
+		self.assertEqual(actual_in_subproject, expected_in_subproject)
 
 	def test_get_related_controller(self):
 		self.assert_get_related(

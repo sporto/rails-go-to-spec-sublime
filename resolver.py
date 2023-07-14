@@ -1,5 +1,9 @@
 import re
 
+PATH_APP = "/app/"
+PATH_LIB = "/lib/"
+PATH_INITIALIZERS = "/config/initializers/"
+
 def code_to_spec(file):
 	with_spec_ext = add_spec_extension(file)
 	return switch_to_spec_dir(with_spec_ext)
@@ -9,31 +13,37 @@ def spec_to_code(file):
 	return switch_to_code_dir(without_spec_ext)
 
 def switch_to_spec_dir(file):
-	if file.startswith("/app/controllers/"):
+	if "/app/controllers/" in file:
 		return [
 			file.replace("/app/controllers/", "/spec/requests/"),
 			file.replace("/app/controllers/", "/spec/controllers/"),
 		]
-	elif file.startswith("/app/"):
+	elif PATH_APP in file:
 		return [
-			file.replace("/app/", "/spec/"),
+			file.replace(PATH_APP, "/spec/"),
+		]
+	elif PATH_LIB in file:
+		return [
+			file.replace(PATH_LIB, "/spec" + PATH_LIB),
+		]
+	elif PATH_INITIALIZERS in file:
+		return [
+			file.replace(PATH_INITIALIZERS, "/spec" + PATH_INITIALIZERS),
 		]
 	else:
-		return [
-			"/spec" + file
-		]
+		return []
 
 def switch_to_code_dir(file):
-	if file.startswith("/spec/config/initializers/"):
+	if "/spec/config/initializers/" in file:
 		return [
 			file.replace("/spec/", "/"),
 		]
-	elif file.startswith("/spec/lib/"):
+	elif "/spec/lib/" in file:
 		return [
 			file.replace("/spec/", "/"),
 			file.replace("/spec/", "/app/"),
 		]
-	elif file.startswith("/spec/requests/"):
+	elif "/spec/requests/" in file:
 		return [
 			file.replace("/spec/requests/", "/app/controllers/"),
 		]
@@ -63,7 +73,6 @@ def remove_spec_extension(file):
 		.replace("_spec.rb", ".rb")
 
 class Resolver:
-
 	def is_spec(self, file):
 		return file.find('_spec.rb') != -1
 

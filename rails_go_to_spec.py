@@ -5,26 +5,30 @@ import re
 class RailsGoToSpecCommand(sublime_plugin.WindowCommand):
 
 	def run(self):
-		sublime.status_message('Running Rails Go To Spec')
+		sublime.status_message("Running Rails Go To Spec")
 		win = self.window
+		project_path = win.folders()[0]
+		# "/Users/xyz/Source/rails-go-to-spec-sublime"
+
 		view = win.active_view()
-		current_file = view.file_name()
 
-		# remove the root dir
-		root_path = win.folders()[0]
-		current_file = re.sub(root_path, '', current_file)
+		absolute_current_file = view.file_name()
+		# This returns an absolute path
+		# e.g."/Users/xyz/Source/rails-go-to-spec-sublime/rails_go_to_spec.py"
 
-		if os.name == 'nt':
-			current_file = current_file.replace('\\', '/')
+		# Remove the project path
+		current_file = re.sub(project_path, "", absolute_current_file)
 
-		# spec_base = view.settings().get('go_to_spec_directory') or 'spec'
+		if os.name == "nt":
+			current_file = current_file.replace("\\", "/")
 
-		related_files = Resolver()\
-			.get_related(current_file)
+		# spec_base = view.settings().get("go_to_spec_directory") or "spec"
 
-		# add the root dir to all files
+		related_files = Resolver().get_related(current_file)
+
+		# Add the project path to all files
 		for ix, file in enumerate(related_files):
-			related_files[ix] = root_path + file
+			related_files[ix] = project_path + file
 
 		self.open_any(related_files)
 
