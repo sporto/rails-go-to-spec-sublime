@@ -17,10 +17,10 @@ class RailsGoToSpecCommand(sublime_plugin.WindowCommand):
 		if os.name == 'nt':
 			current_file = current_file.replace('\\', '/')
 
-		spec_base = view.settings().get('go_to_spec_directory') or 'spec'
+		# spec_base = view.settings().get('go_to_spec_directory') or 'spec'
 
 		related_files = Resolver()\
-			.get_related(current_file, spec_base)
+			.get_related(current_file)
 
 		# add the root dir to all files
 		for ix, file in enumerate(related_files):
