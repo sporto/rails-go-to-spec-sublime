@@ -19,7 +19,7 @@ class RailsGoToSpecCommand(sublime_plugin.WindowCommand):
 
 		spec_base = view.settings().get('go_to_spec_directory') or 'spec'
 
-		related_files = RailsGoToSpec.resolver.Resolver()\
+		related_files = Resolver()\
 			.get_related(current_file, spec_base)
 
 		# add the root dir to all files
