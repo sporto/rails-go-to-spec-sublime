@@ -20,7 +20,7 @@ def switch_to_spec_dir(file):
 		]
 	else:
 		return [
-			f"/spec{file}"
+			"/spec" + file
 		]
 
 def switch_to_code_dir(file):
