@@ -29,8 +29,7 @@ class RailsGoToSpecCommand(sublime_plugin.WindowCommand):
 		self.open_any(related_files)
 
 	def is_enabled(self):
-		return True
-		# return self.window.active_view() != None
+		return self.window.active_view() != None
 
 	def open_any(self, files):
 		if len(files) == 0:
